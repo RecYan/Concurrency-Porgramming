@@ -46,7 +46,8 @@
 
 + 内存模型抽象结构
 JMM(Java内存模型)决定了一个线程对*共享变量的操作*何时对另一个线程可见，其抽象模型如下：
-<div align=center>![Java内存模型](https://github.com/RecYan/Concurrency-Porgramming/blob/master/img/ch3-1.jpg)</div>
+![Java内存模型](https://github.com/RecYan/Concurrency-Porgramming/raw/master/img/ch3-1.jpg)  
+
 即线程A与线程B通信过程如下：
 >线程A将本地内存A中更新过的共享变量刷新到主内存中
 >线程B再主内存中去读取该共享变量
