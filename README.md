@@ -55,3 +55,49 @@ JMM(Java内存模型)决定了一个线程对*共享变量的操作*何时对另
 1. 本地内存为JMM的抽象概念，并不真实存在
 2. JMM通过控制主内存与每个线程的本地内存之间的交互，来为Java来提供内存可见性保证
 
+
+
+---
+
+**Java多线程核心知识点**
+1. 进程：一次程序的运行，为系统进行资源分配和调度的一个独立单位 eg->任务列表中的exe文件  
+2. 线程：进程中独立运行的子任务  
+3. 多线程编程实现方式：i.继承Thread类 ii.实现Runnable接口  
+> 需要注意：`public class Thread implements Runnable`，Thread类实现了Runnable接口  
+4. 在JVM中，i++的执行过程：  
+>1. 取得原有i值  
+>2. 计算i+1  
+>3. 对i进行复制  
+>4. **若有多线程访问时，很容易出现线程不安全问题，需要引起注意**  
+5. API常见方法：  
+>currentThread(): 返回代码段正在被那个线程调用  
+>isAlive(): 判断当前线程是否处于活动状态  
+>sleep(): 在指定毫秒内让当前“正在执行的线程”休眠  
+>getId(): 取得线程的唯一标志  
+6. 线程停止问题  
+> interrupted(): 测试**当前线程**是否终端，仅仅在当前线程搭了一个停止的标记，并不是真正的通知线程,其具有清除状态的功能  
+``` java
+/*** public static boolean interrupted ***/  
+Thread.currentThread.interrupted();  
+System.out.println(Thread.interrupted()); //true  
+System.out.println(Thread.interrupted()); //false  
+```
+> isInterrupted()：测试Thread对象是否已经停止，但不清楚状态标志
+``` java
+/*** public boolean interrupted ***/  
+Thread.currentThread.interrupted();  
+System.out.println(Thread.isInterrupted()); //true  
+System.out.println(Thread.isInterrupted()); //true  
+```
+7. 线程暂停问题
+>suspend(): 暂停线程， resume(): 恢复线程运行  
+>**注意：**可能出现*独占锁*的现象，不同步现象  
+>yield(): 放弃当前cpu的执行权  
+8. 线程优先级：java中线程优先级分为1--10个等级，等级越高，优先级越大  
+9. 守护线程： 但进程中不存在非守护线程时，该线程自动销毁，典型的例子就是 *垃圾回收线程*  
+
+
+
+
+
+
