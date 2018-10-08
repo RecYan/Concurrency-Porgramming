@@ -136,4 +136,11 @@ System.out.println(Thread.isInterrupted()); //true
 >8. 如果一个变量事先没有被lock操作锁定，则不允许他执行unlock操作，也不允许去unlock一个被其他线程锁定的变量
 >9. 对一个变量执行unlock操作之前，必须先把此变量同步到主内存中（其实就是执行store和write操作之后）
 
+## 测试项目搭建 ##
+1. 使用 Spring-Boot 项目做简单测试用例 <concurrency>  
+2. 模拟工具： Postman、Apache Bench(AB)、JMeter、代码并发模拟：Semaphore, CountDownLatch  
 
+**CountDownLatch示意图**: 即阻塞线程 且在特定的条件下执行指定的线程  
+![CountDownLatch](https://i.imgur.com/mzQUNWf.jpg)  
+**SemaPhore示意图**：信号量，阻塞线程 并控制统一时间内的并发请求量  
+![SemaPhore](https://i.imgur.com/MAd7KET.jpg)  
