@@ -143,4 +143,21 @@ System.out.println(Thread.isInterrupted()); //true
 **CountDownLatch示意图**: 即阻塞线程 且在特定的条件下执行指定的线程  
 ![CountDownLatch](https://i.imgur.com/mzQUNWf.jpg)  
 **SemaPhore示意图**：信号量，阻塞线程 并控制统一时间内的并发请求量  
-![SemaPhore](https://i.imgur.com/MAd7KET.jpg)  
+![SemaPhore](https://i.imgur.com/MAd7KET.jpg) 
+
+
+## 线程安全性 ##
+1. 定义：当多个线程访问某个类时，不管运行时环境采用**何种调度方式**或者这些线程将如何交替执行，并且在主调代码中**不需要任何额外的同步或协同**，这个类都能**表现出正确的行为**，那么这个类就是线程安全的。
+2. 主要体现：
+>1. 原子性：提供了互斥访问，同一时刻只能由一个线程来对其进行操作
+>2. 可见性：一个线程对**主线程**的修改可以被其他线程观察到
+>3. 有序性：一个线程观察其他线程中的指令执行顺序，由于**指令重排序**的存在,该观察结果一般杂乱无序
+3. 原子性-Atomic包
+>1. AtomicXXX: CAS、Unsafe.compareAndSwapInt....
+>2. 使用Atomic包，该改进了原先*CountExample1*中线程不安全的代码--使用AtomicInteger、increaseAndGet
+>3. increaseAndGet源码跟踪: 
+>>**unsafe**.getAndAddInt(this, valueOffset, 1) + 1; --> **unsafe类中*getAndAddInt*方法实现** 
+>>--> do..while语句中*while(!this.**compareAndSwapInt**(var1, var2, var5, var5 + var4));*，发现*compareAndSwapInt*方法被**native**修饰，为底层方法,核心思想为**CAS**。其中，*var5 = this.getIntVolatile(var1, var2);*
+>> 解释：count.increaseAndGet();[count，i=2,自增1] -->var1:count, var2为当前需要增加的值，例如2，var4为增加的值的大小,例如1，var5为调用底层方法返回的值。
+>>那么*compareAndSwapInt*方法的思想为：只有当var2的值与底层返回的var5的值**相同**时,才进行var5的更新操作[var5 = var5 + var4],之后再循环进行。即上面的count存在于工作内存，而var5则存在于主内存中
+>4. AtomicLong和AtomicAdder辨析：
