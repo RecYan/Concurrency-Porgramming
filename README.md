@@ -157,7 +157,11 @@ System.out.println(Thread.isInterrupted()); //true
 >2. 使用Atomic包，该改进了原先*CountExample1*中线程不安全的代码--使用AtomicInteger、increaseAndGet
 >3. increaseAndGet源码跟踪: 
 >>**unsafe**.getAndAddInt(this, valueOffset, 1) + 1; --> **unsafe类中*getAndAddInt*方法实现** 
->>--> do..while语句中*while(!this.**compareAndSwapInt**(var1, var2, var5, var5 + var4));*，发现*compareAndSwapInt*方法被**native**修饰，为底层方法,核心思想为**CAS**。其中，*var5 = this.getIntVolatile(var1, var2);*
+>>--> do..while语句中*while(!this.**compareAndSwapInt**(var1, var2, var5, var5 + var4));*，发现*compareAndSwapInt*方法被**native**修饰，为底层方法,核心思想为**CAS**。其中，*var5 = this.getIntVolatile(var1, var2);*  
 >> 解释：count.increaseAndGet();[count，i=2,自增1] -->var1:count, var2为当前需要增加的值，例如2，var4为增加的值的大小,例如1，var5为调用底层方法返回的值。
->>那么*compareAndSwapInt*方法的思想为：只有当var2的值与底层返回的var5的值**相同**时,才进行var5的更新操作[var5 = var5 + var4],之后再循环进行。即上面的count存在于工作内存，而var5则存在于主内存中
+>>那么*compareAndSwapInt*方法的思想为：只有当var2的值与底层返回的var5的值**相同**时,才进行var5的更新操作[var5 = var5 + var4],之后再循环进行。即上面的count存在于工作内存，而var5则存在于主内存中  
 >4. AtomicLong和AtomicAdder辨析：
+>> **AtomicLong原理：**AtomicLong的原理是依靠底层的cas来保障原子性的更新数据，在要添加或者减少的时候，会使用死循环不断地cas到特定的值，从而达到更新数据的目的 <跟踪源码--while死循环>  
+>>**AtomicAdder原理：**increase() --> add() --> cell[] <*将value拆分成多个cell，最终的value值就是这多个cell相加的和*>  --> **volatile** long value 来保证原子性。优势：*在AtomicLong的基础上将单点的更新压力分散到各个节点，在低并发的时候通过对base的直接更新可以很好的保障和AtomicLong的性能基本保持一致，而在高并发的时候通过分散提高了性能。 *[Longadder参考博客](https://blog.csdn.net/u011392897/article/details/60480108)
+>5. AtomicBoolean: *compareAndSet()*方法，可保证需要的代码段 同时间，只被一个线程执行<通过设置标记位>
+>6. AtomicReference: 关注*compareAndSet()*方法
