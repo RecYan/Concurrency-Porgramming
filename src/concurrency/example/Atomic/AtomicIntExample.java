@@ -21,7 +21,7 @@ public class AtomicIntExample {
 
     public static int threadTotal = 200; //并发线程数
 
-    public static AtomicInteger count = new AtomicInteger(0); // AtomicInteger 计数器
+    public static AtomicInteger count = new AtomicInteger(0);
 
 
     public static void main(String[] args) throws Exception {
@@ -46,13 +46,12 @@ public class AtomicIntExample {
         }
         countDownLatch.await();
         executorService.shutdown(); //关闭线程池
-        log.info("count:{}" + count.get());
+        log.info("count:{}", count.get());
     }
 
     //计数方法
     private static void add() {
-        count.incrementAndGet(); //先增后获取
-        //count.getAndIncrease(); //先去再增加
+        count.incrementAndGet();
     }
 
 }
