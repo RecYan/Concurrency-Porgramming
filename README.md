@@ -158,7 +158,7 @@ System.out.println(Thread.isInterrupted()); //true
 >3. increaseAndGet源码跟踪: 
 >>**unsafe**.getAndAddInt(this, valueOffset, 1) + 1; --> **unsafe类中*getAndAddInt*方法实现** 
 >>--> do..while语句中*while(!this.**compareAndSwapInt**(var1, var2, var5, var5 + var4));*，发现*compareAndSwapInt*方法被**native**修饰，为底层方法,核心思想为**CAS**。其中，*var5 = this.getIntVolatile(var1, var2);*  
->> 解释：count.increaseAndGet();[count，i=2,自增1] -->var1:count, var2为当前需要增加的值，例如2，var4为增加的值的大小,例如1，var5为调用底层方法返回的值。
+>> **解释：**count.increaseAndGet();[count，i=2,自增1] -->var1:count, var2为当前需要增加的值，例如2，var4为增加的值的大小,例如1，var5为调用底层方法返回的值。
 >>那么*compareAndSwapInt*方法的思想为：只有当var2的值与底层返回的var5的值**相同**时,才进行var5的更新操作[var5 = var5 + var4],之后再循环进行。即上面的count存在于工作内存，而var5则存在于主内存中  
 >4. AtomicLong和AtomicAdder辨析：
 >> **AtomicLong原理：**AtomicLong的原理是依靠底层的cas来保障原子性的更新数据，在要添加或者减少的时候，会使用死循环不断地cas到特定的值，从而达到更新数据的目的 <跟踪源码--while死循环>  
@@ -167,3 +167,21 @@ System.out.println(Thread.isInterrupted()); //true
 >6. AtomicReference: 关注*compareAndSet()*方法  
 >7. AtomicReferenceFieldUpdater: 更新指定类中的符合要求的字段，详细见AtomicIntergeFieldUpdater.java  
 >8. AtomitStampReference: **CAS的ABA问题<并发时，一个线程将变量的值A改成B之后又改回A>** --> 使用版本号解决  
+
+4. **原子性-锁**
+>**synchronized:** 依赖JVM
+>>1. 修饰代码块：大括号括起来的代码，作用于调用对象  
+>>2. 修饰方法：整个方法，作用于调用对象  
+>>3. 修饰静态方法：静态方法，作用与**类中所有对象**  
+>>4. 修饰类  
+>>5. 修改countExample代码
+>
+>**Lock:** 依赖特殊的cpu指令，主要实现类-ReentrantLock <后面单独分析>
+>**比较：**
+>> synchronized: 不可中断锁，适合竞争不激烈情况，可读性好
+>> Lock: 可中断锁，多样化同步，竞争激烈时可维持常态
+>> Atomic：竞争激烈时可维持常态，比Lock性能好，但只能同步一个值
+
+5. **可见性**: 一个线程对**主线程**的修改，可以被其他线程及时观察到
+
+
