@@ -178,8 +178,8 @@ System.out.println(Thread.isInterrupted()); //true
 >
 >**Lock:** 依赖特殊的cpu指令，主要实现类-ReentrantLock <后面单独分析>
 >**比较：**
->> synchronized: 不可中断锁，适合竞争不激烈情况，可读性好
->> Lock: 可中断锁，多样化同步，竞争激烈时可维持常态
+>> synchronized: 不可中断锁，适合竞争不激烈情况，可读性好  
+>> Lock: 可中断锁，多样化同步，竞争激烈时可维持常态  
 >> Atomic：竞争激烈时可维持常态，比Lock性能好，但只能同步一个值
 
 5. **可见性**: 一个线程对**主线程**的修改，可以被其他线程及时观察到
