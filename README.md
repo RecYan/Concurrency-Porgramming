@@ -152,7 +152,7 @@ System.out.println(Thread.isInterrupted()); //true
 >1. 原子性：提供了互斥访问，同一时刻只能由一个线程来对其进行操作
 >2. 可见性：一个线程对**主线程**的修改可以被其他线程观察到
 >3. 有序性：一个线程观察其他线程中的指令执行顺序，由于**指令重排序**的存在,该观察结果一般杂乱无序
-3. 原子性-Atomic包
+3. **原子性-Atomic包**
 >1. AtomicXXX: CAS、Unsafe.compareAndSwapInt....
 >2. 使用Atomic包，该改进了原先*CountExample1*中线程不安全的代码--使用AtomicInteger、increaseAndGet
 >3. increaseAndGet源码跟踪: 
@@ -163,5 +163,7 @@ System.out.println(Thread.isInterrupted()); //true
 >4. AtomicLong和AtomicAdder辨析：
 >> **AtomicLong原理：**AtomicLong的原理是依靠底层的cas来保障原子性的更新数据，在要添加或者减少的时候，会使用死循环不断地cas到特定的值，从而达到更新数据的目的 <跟踪源码--while死循环>  
 >>**AtomicAdder原理：**increase() --> add() --> cell[] <*将value拆分成多个cell，最终的value值就是这多个cell相加的和*>  --> **volatile** long value 来保证原子性。优势：*在AtomicLong的基础上将单点的更新压力分散到各个节点，在低并发的时候通过对base的直接更新可以很好的保障和AtomicLong的性能基本保持一致，而在高并发的时候通过分散提高了性能。 *[Longadder参考博客](https://blog.csdn.net/u011392897/article/details/60480108)
->5. AtomicBoolean: *compareAndSet()*方法，可保证需要的代码段 同时间，只被一个线程执行<通过设置标记位>
->6. AtomicReference: 关注*compareAndSet()*方法
+>5. AtomicBoolean: *compareAndSet()*方法，可保证需要的代码段 同时间，只被一个线程执行<通过设置标记位>,详情见AtomicBoolean.java  
+>6. AtomicReference: 关注*compareAndSet()*方法  
+>7. AtomicReferenceFieldUpdater: 更新指定类中的符合要求的字段，详细见AtomicIntergeFieldUpdater.java  
+>8. AtomitStampReference: **CAS的ABA问题<并发时，一个线程将变量的值A改成B之后又改回A>** --> 使用版本号解决  
