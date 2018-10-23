@@ -29,20 +29,20 @@
 <a name="1.1"></a>
 + volatile : 轻量级的synchronized
 
->多处理器开发中保证了<font color="red">共享变量</font>的`可见性`,即当一个线程改变一个共享变量时，其他的线程也能读取到这个修改的值
->java内存模型确保所有线程看到的这个变量的值是一直的
->可见性保证：Lock前缀指令、缓存一致性
+>多处理器开发中保证了<font color="red">共享变量</font>的`可见性`,即当一个线程改变一个共享变量时，其他的线程也能读取到这个修改的值  
+>java内存模型确保所有线程看到该变量的值是一致的  
+>可见性保证：Lock前缀指令、缓存一致性  
 >优化：追加字节优化性能
 
 <a name="1.2"></a>
 + synchronized
->synchronized用的锁存于java对象头中的 *Mark Word* 区域中
+>synchronized用的锁存于java对象头中的 *Mark Word* 区域中  
 >jdk1.6以后，引入了**偏向锁**和**轻量级锁**来减少获取锁和释放锁的性能消耗  
 >锁四种状态：无锁状态、偏向锁状态、轻量级锁状态、重量级锁状态，状态可以升级但不可降级
 
 <a name="1.3"></a>
 + 原子操作
-**CAS:** Compare And Swap 
+**CAS:** Compare And Swap
 >CAS操作需要输入两个值，一个旧值(期望操作前)、一个新值，操作时先比较旧值是否变化，无则交换程新值，有则不操作
 
 <a name="1.4"></a>
@@ -252,4 +252,11 @@ happens-before原则：
 原子性： Atomic包、CAS算法、synchronized、Lock
 可见性： synchronized、Lock
 有序性： happens-before原则
+/**
+volatile与synchronized辨析：
+1.volatile关键字是线程同步的轻量级实现，所以volatile性能肯定比synchronized关键字要好,但是volatile关键字只能用于变量而synchronized关键字可以修饰方法以及代码块,synchronized关键字在JavaSE1.6之后进行了主要包括为了减少获得锁和释放锁带来的性能消耗而引入的偏向锁和轻量级锁以及其它各种优化之后执行效率有了显著提升
+2.多线程访问volatile关键字不会发生阻塞，而synchronized关键字可能会发生阻塞
+3.volatile关键字能保证数据的可见性，但不能保证数据的原子性。synchronized关键字两者都能保证
+4.volatile关键字用于解决变量在多个线程之间的可见性，而ynchronized关键字解决的是多个线程之间访问资源的同步性
+**/
 ```
