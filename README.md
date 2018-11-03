@@ -120,6 +120,8 @@ System.out.println(Thread.isInterrupted()); //true
 >yield(): 放弃当前cpu的执行权  
 8. 线程优先级：java中线程优先级分为1--10个等级，等级越高，优先级越大  
 9. 守护线程： 但进程中不存在非守护线程时，该线程自动销毁，典型的例子就是 *垃圾回收线程*  
+10. **多线程状态转换图**  
+![多线程状态转换图](https://i.imgur.com/9ucWRWT.jpg)
 
 <a name="3.2"></a>
 **同步相关**
