@@ -122,12 +122,13 @@ System.out.println(Thread.isInterrupted()); //true
 9. 守护线程： 但进程中不存在非守护线程时，该线程自动销毁，典型的例子就是 *垃圾回收线程*  
 10. **多线程状态转换图**  
 ![多线程状态转换图](https://i.imgur.com/9ucWRWT.jpg)
+11. 线程间通信：等待唤醒机制<WatiAndNotifyDemo>
+![等待唤醒机制](https://i.imgur.com/OAKwtmP.jpg)
 
 <a name="3.2"></a>
 **同步相关**
 1. 非线程安全： 多个线程对同一个对象中的实例变量进行并发访问时发生，可能会出现*脏读*
 2. 方法内的变量时线程安全的 --> 见HasSelfPrivateNum.java
-3. 
 
 ---
 
