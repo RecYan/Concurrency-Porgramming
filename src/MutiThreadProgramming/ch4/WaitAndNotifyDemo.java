@@ -31,7 +31,7 @@ public class WaitAndNotifyDemo {
                     try {
                         System.out.println(Thread.currentThread() + " flag is true. wait @ "
                                 + new SimpleDateFormat("HH:mm:ss").format(new Date()));
-                        lock.wait(); //当前线程优RUNNING转为WAITTING,进入对象等待队列中排队
+                        lock.wait();
                     } catch (InterruptedException e) {
                     }
                 }
@@ -49,7 +49,7 @@ public class WaitAndNotifyDemo {
                 // 获取lock的锁，然后进行通知，通知时不会释放lock的锁，
                 // 直到当前线程释放了lock后，WaitThread才能从wait方法中返回
                 System.out.println(Thread.currentThread() + " hold lock. notify @ " + new SimpleDateFormat("HH:mm:ss").format(new Date()));
-                lock.notifyAll(); //此时 并不会直接唤醒等待线程， 而是等待该监视器的锁被释放后[同步块执行完] 才等唤醒对应的等待线程 [WAITING --> BLOCKED]
+                lock.notifyAll();
                 flag = false;
                 SleepUtils.second(5);
             }
