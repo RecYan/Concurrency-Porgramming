@@ -124,7 +124,17 @@ System.out.println(Thread.isInterrupted()); //true
 ![多线程状态转换图](https://i.imgur.com/9ucWRWT.jpg)
 11. 线程间通信：等待唤醒机制<WatiAndNotifyDemo>
 ![等待唤醒机制](https://i.imgur.com/OAKwtmP.jpg)
-
+12. Thread.join()实现细节
+``` java
+当前线程 只有等到调用join()方法的线程执行结束时 才能返回从断点继续执行
+public final synchronized void join(long millis) throws InterruptedException { //加锁当前线程对象
+//条件不满足时 则继续等待
+while(isAlive) {
+	wait(0);
+}
+//条件符合 则方法返回
+}
+```
 <a name="3.2"></a>
 **同步相关**
 1. 非线程安全： 多个线程对同一个对象中的实例变量进行并发访问时发生，可能会出现*脏读*
