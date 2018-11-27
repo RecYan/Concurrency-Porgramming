@@ -128,10 +128,10 @@ System.out.println(Thread.isInterrupted()); //true
 ``` java
 当前线程 只有等到调用join()方法的线程执行结束时 才能返回从断点继续执行
 public final synchronized void join(long millis) throws InterruptedException { //加锁当前线程对象
-//条件不满足时 则继续等待
-while(isAlive) {
-	wait(0);
-}
+	//条件不满足时 则继续等待
+	while(isAlive) {
+		wait(0);
+	}
 //条件符合 则方法返回
 }
 ```
